@@ -1,0 +1,1 @@
+This is the homework for first week of GUI class, we were asked to design a simple layout for RPG game main menu including title screen, start and exit. We are also asked to find or make GUI assets to go with the menu
