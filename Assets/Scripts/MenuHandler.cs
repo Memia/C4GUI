@@ -7,10 +7,20 @@ using UnityEngine.EventSystems; //control the event (button things)
 
 public class MenuHandler : MonoBehaviour
 {
-
+    #region Variables
     public GameObject mainMenu, optionsMenu, creditMenu;
     public bool showOptions;
-    //public bool showCredits;
+   //public bool showCredits;
+    public Slider volSlider, brightSlider;
+    public AudioSource mainAudio;
+    public Light dirLight;
+    #endregion
+    private void Start()
+    {
+   
+        mainAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+    
+    }
     public void LoadGame()
     {
         SceneManager.LoadScene(1);
@@ -34,8 +44,8 @@ public class MenuHandler : MonoBehaviour
             showCredits = false;
         mainMenu.SetActive(true);
         creditMenu.SetActive(false);
-        return true;
-        */
+        return true;*/
+        
 
         bool OptionToggle()
         {
@@ -44,17 +54,29 @@ public class MenuHandler : MonoBehaviour
                 showOptions = false;
                 mainMenu.SetActive(true);
                 optionsMenu.SetActive(false);
-                return true;
+                return false;
             }
             else
             {
                 showOptions = true;
                 mainMenu.SetActive(false);
                 optionsMenu.SetActive(true);
-                return false;
+            volSlider = GameObject.Find("Volume_Slider").GetComponent<Slider>();
+            volSlider.value = mainAudio.volume;//slider dot starts where volume amount is, but won't affect the volume
+            return true;
             }
         }
+    public void Volume()
+    {
+        //volume is set to where slider is moved to
+        mainAudio.volume = volSlider.value;
     }
+    public void Brightness()
+    {
+    }
+    }
+
     
+
 
 
