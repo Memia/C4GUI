@@ -7,12 +7,15 @@ using UnityEngine.EventSystems; //control the event (button things)
 
 public class MenuHandler : MonoBehaviour
 {
+
     #region Variables
     [Header("OPTIONS")]
     public bool showOptions;
     [Header("Keys")]
     public KeyCode holdingKey;
     public KeyCode forward, backward, left, right, jump, crouch, sprint, interact;
+    [Header("Preferences")]
+
     [Header("References")]
     public AudioSource mainAudio;
     public Slider volSlider, brightSlider, ambSlider;
@@ -35,9 +38,10 @@ public class MenuHandler : MonoBehaviour
 
         mainAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
         dirLight = GameObject.FindGameObjectWithTag("DirLight").GetComponent<Light>();
+
         #region SetUp Keys
         //set out keys to the preset keys we may have saved, else set the keys to default.
-        forward = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Forward", "W"));
+        /*forward = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Forward", "W"));
         backward = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Backward", "S"));
         left = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Left", "A"));
         right = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Right", "D"));
@@ -45,11 +49,21 @@ public class MenuHandler : MonoBehaviour
         crouch = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Crouch", "LeftControl"));
         sprint = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Sprint", "LeftShift"));
         interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Interact", "E"));
+        */
 
         #endregion
+        #region Settings
 
-
+        #endregion
+        Resolution[] resolutions = Screen.resolutions;
+        foreach (Resolution res in resolutions)
+        {
+            print(res.width + "x" + res.height);
+        }
+        Screen.SetResolution(resolutions[0].width, resolutions[0].height, true);
     }
+
+
     public void LoadGame()
     {
         SceneManager.LoadScene(1);
@@ -130,25 +144,33 @@ public class MenuHandler : MonoBehaviour
         PlayerPrefs.SetString("Crouch", crouch.ToString());
         PlayerPrefs.SetString("Sprint", sprint.ToString());
         PlayerPrefs.SetString("Interact", interact.ToString());
+        PlayerPrefs.SetFloat("Volume", volSlider.value);
+        PlayerPrefs.SetString("FullScreen", isFullScreen.ToString());
     }
     void OnGUI()
     {
         Event e = Event.current;
         if (forward == KeyCode.None)
         {
-            Debug.Log("Keycode:" + e.keyCode);
-            if (!(e.keyCode == backward || e.keyCode == left || e.keyCode == right || e.keyCode == jump || e.keyCode == crouch || e.keyCode == sprint || e.keyCode == interact))
+            Debug.Log("KeyCode: " + e.keyCode);
+            if (e.keyCode != KeyCode.None)
             {
-                forward = e.keyCode;
-                holdingKey = KeyCode.None;
-                forwardText.text = forward.ToString();
+                if (!(e.keyCode == backward || e.keyCode == left || e.keyCode == right || e.keyCode == jump || e.keyCode == crouch || e.keyCode == sprint || e.keyCode == interact))
+                {
+                    forward = e.keyCode;
+                    holdingKey = KeyCode.None;
+                    forwardText.text = forward.ToString();
+                }
+                else
+                {
+                    forward = holdingKey;
+                    holdingKey = KeyCode.None;
+                    forwardText.text = forward.ToString();
+                }
             }
-        }
-        else
-        {
-            forward = holdingKey;
-        }
 
+
+        }
     }
     public void Forward()
     {
@@ -160,8 +182,5 @@ public class MenuHandler : MonoBehaviour
         }
     }
 }
-
-
-
 
 
