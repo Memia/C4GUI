@@ -21,38 +21,39 @@ public class GameManageMent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
 
         //if we perss escape Key
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // if it is not paused, pause
-            // if it is paused already, and isn't showing the settings, continue
-            // if it is paused already and is showing settings, unshow settings, don't continue
             if (!paused)
             {
                 Pause();
             }
-            if (paused)
+            else if (paused && settingsPanel.activeSelf)
             {
-                if (settingsPanel.active)
+
                 {
-                    settingsPanel.SetActive (false);
+                    settingsPanel.SetActive(false);
+                    pausedPanel.SetActive(true);
                 }
-                else
-                {
-                    Continue();
-                }
+
+            }
+            else
+            {
+                Continue();
             }
         }
     }
+
     public void LoadScene()
     {
         SceneManager.LoadScene(1);
     }
     public void Pause()
     {
+
         Time.timeScale = 0;
         paused = true;
         pausedPanel.SetActive(true);
@@ -66,4 +67,6 @@ public class GameManageMent : MonoBehaviour
 
 
     }
+
+
 }
