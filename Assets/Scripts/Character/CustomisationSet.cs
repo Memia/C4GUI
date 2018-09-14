@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 //you will need to change Scenes
 public class CustomisationSet : MonoBehaviour
 {
-
+    // private bool showDropDown;
+    public string[] classes;
+    public string heroclass = "Class";
+    private int classIndex;
+    public int points = 10;
+    //  public Vector2 scrollPos;
     #region Variables
     [Header("Texture List")]
     //Texture2D List for skin,hair, mouth, eyes
@@ -36,10 +42,10 @@ public class CustomisationSet : MonoBehaviour
     public string charName = "Adventurer";
     [Header("Stats")]
     //base stats will affect our character
-    public int str;
-    public int dex, chr, con, intel, wis;
+    // public int str;
+    // public int dex, chr, con, intel, wis;
     //the points in which we use to increase our stats
-    public int points = 10;
+
     public CharacterClass charClass = CharacterClass.barbarian;
     private void Start()  //in start we need to set up the following
     {
@@ -181,7 +187,7 @@ public class CustomisationSet : MonoBehaviour
             case "Clothes":
                 index = clothesIndex;
                 max = clothesMax;
-                textures = armour.ToArray();
+                textures = clothes.ToArray();
                 matIndex = 6;
                 break;
 
@@ -234,7 +240,15 @@ public class CustomisationSet : MonoBehaviour
                 //index equals our index
                 eyesIndex = index;
                 break;
-                //break
+            //break
+            case "Clothes":
+                clothesIndex = index;
+                break;
+            case "Armour":
+                armourIndex = index;
+                break;
+
+
         }
         #endregion
         #endregion
@@ -294,50 +308,183 @@ public class CustomisationSet : MonoBehaviour
         //set up same things for Hair, Mouth and Eyes
         #region Hair
         //GUI button on the left of the screen with the contence <
-        if (GUI.Button(new Rect(0.25f* scrW,scrH + i* (0.5f *scrH), 0.5f* scrW, 0.5f *scrH), "<")) //figure out how the rect box work
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
         {
             //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
             SetTexture("Hair", -1);
         }
-        
+
+
         //GUI Box or Lable on the left of the screen with the contence material Name
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), "Hair");
         //GUI button on the left of the screen with the contence >
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            //when pressed the button will run SetTexture and grab the Skin Material and move the texture index in the direction  1
+            SetTexture("Hair", 1);
+        }
+        i++;
+
+
+
+
         //when pressed the button will run SetTexture and grab the  Material and move the texture index in the direction  1
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         #endregion
         #region Mouth
         //GUI button on the left of the screen with the contence <
-        //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
+        {
+            //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+            SetTexture("Mouth", -1);
+        }
+
         //GUI Box or Lable on the left of the screen with the contence material Name
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), "Hair");
         //GUI button on the left of the screen with the contence >
-        //when pressed the button will run SetTexture and grab the  Material and move the texture index in the direction  1
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            //when pressed the button will run SetTexture and grab the Skin Material and move the texture index in the direction  1
+            SetTexture("Mouth", 1);
+        }
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        i++;
+
+
         #endregion
         #region Eyes
         //GUI button on the left of the screen with the contence <
-        //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
+        {
+            //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+            SetTexture("Eyes", -1);
+        }
+
+
         //GUI Box or Lable on the left of the screen with the contence material Name
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), "Eyes");
         //GUI button on the left of the screen with the contence >
-        //when pressed the button will run SetTexture and grab the  Material and move the texture index in the direction  1
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            //when pressed the button will run SetTexture and grab the Skin Material and move the texture index in the direction  1
+            SetTexture("Eyes", 1);
+        }
+        i++;
         //move down the screen with the int using ++ each grouping of GUI elements are moved using this
         #endregion
-    }
-    #region Random Reset
-    //create 2 buttons one Random and one Reset
-    //Random will feed a random amount to the direction 
-    //reset will set all to 0 both use SetTexture
-    //move down the screen with the int using ++ each grouping of GUI elements are moved using this
-    #endregion
-    #region Character Name and Save & Play
-    //name of our character equals a GUI TextField that holds our character name and limit of characters
-    //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        #region Clothes
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
+        {
+            //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+            SetTexture("Clothes", -1);
 
-    //GUI Button called Save and Play
-    //this button will run the save function and also load into the game level
-    #endregion
-    #endregion
-}
-public enum CharacterClass //reason why you put it outside of the class is so you can reference the stats without referencing the script.
-{
-    barbarian, bard, druid, monk, paladin, ranger, sorcerer, warlock
+        }
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), "Clothes");
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            //when pressed the button will run SetTexture and grab the Skin Material and move the texture index in the direction  1
+            SetTexture("Clothes", 1);
+        }
+        i++;
+        #endregion
+
+        #region Armour
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
+        {
+            //when pressed the button will run SetTexture and grab the Material and move the texture index in the direction  -1
+            SetTexture("Armour", -1);
+
+        }
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), "Armour");
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            //when pressed the button will run SetTexture and grab the Skin Material and move the texture index in the direction  1
+            SetTexture("Armour", 1);
+            #endregion
+        }
+        i++;
+        #region Random Reset
+        //create 2 buttons one Random and one Reset
+        //Random will feed a random amount to the direction 
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), scrW, 0.5f * scrH), "Random"))
+        {
+            SetTexture("Skin", Random.Range(0, skinMax - 1));
+            SetTexture("Hair", Random.Range(0, hairMax - 1));
+            SetTexture("Mouth", Random.Range(0, mouthMax - 1));
+            SetTexture("Eyes", Random.Range(0, eyesMax - 1));
+            SetTexture("Armour", Random.Range(0, armourMax - 1));
+            SetTexture("Clothes", Random.Range(0, clothesMax - 1));
+        }
+        //reset will set all to 0 both use SetTexture
+        if (GUI.Button(new Rect(1.25f * scrW, scrH + i * (0.5f * scrH), scrW, 0.5f * scrH), "Reset"))
+        {
+            SetTexture("Skin", skinIndex = 0);
+            SetTexture("Hair", hairIndex = 0);
+            SetTexture("Mouth", mouthIndex = 0);
+            SetTexture("Eyes", eyesIndex = 0);
+            SetTexture("Armour", armourIndex = 0);
+            SetTexture("Clothes", clothesIndex = 0);
+
+        }
+        i++;
+        //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        #endregion
+        #region Character Name and Save & Play
+        //name of our character equals a GUI TextField that holds our character name and limit of characters
+        charName = GUI.TextField(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), charName, 16);
+        //move down the screen with the int using ++ each grouping of GUI elements are moved using this
+        i++;
+
+        //GUI Button called Save and Play
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), "Save & Play"))
+        //this button will run the save function and also load into the game level
+        {
+            Save();
+            SceneManager.LoadScene(3);
+        }
+        i++;
+        #endregion
+        #endregion
+        #region Class Selection
+        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
+        {
+            classIndex -= 1;
+            if (classIndex < 0)
+            {
+                classIndex = classes.Length - 1;
+            }
+        }
+        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
+        {
+            classIndex += 1;
+            if (classIndex > classes.Length - 1)
+            {
+                classIndex = 0;
+            }
+
+        }
+        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), classes[classIndex]);
+
+        string toShow = "" + points;
+        // if (GUI.Button(new Rect(12.15f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "-"))
+        //{ points }
+
+        GUI.Button(new Rect(12.65f * scrW, scrH + i * (0.5f * scrH), .7f * scrW, 0.5f * scrH), toShow);
+
+        if (GUI.Button(new Rect(13.35f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "+"))
+            if (points > 0)
+            {
+                points--;
+            }
+        #region Barbarian
+        
+
+
+
+        #endregion
+    }
+    public enum CharacterClass //reason why you put it outside of the class is so you can reference the stats without referencing the script.
+    {
+        barbarian, bard, druid, monk, paladin, ranger, sorcerer, warlock
+    }
 }
