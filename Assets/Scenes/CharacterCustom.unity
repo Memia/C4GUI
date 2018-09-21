@@ -1242,7 +1242,7 @@ MonoBehaviour:
   eyesIndex: 0
   clothesIndex: 0
   armourIndex: 0
-  character: {fileID: 0}
+  charMesh: {fileID: 0}
   skinMax: 4
   hairMax: 5
   mouthMax: 3
@@ -1251,12 +1251,12 @@ MonoBehaviour:
   armourMax: 11
   charName: Adventurer
   statArray:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Strength
+  - Dexterity
+  - Constitution
+  - Intelligence
+  - Wisdom
+  - Charisma
   stats: 000000000000000000000000000000000000000000000000
   tempStats: 000000000000000000000000000000000000000000000000
   str: 0
@@ -1267,16 +1267,6 @@ MonoBehaviour:
   wis: 0
   points: 10
   charClass: 0
-  selectedClass:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  selectedIndex: 0
 --- !u!4 &966680104
 Transform:
   m_ObjectHideFlags: 0
@@ -2115,7 +2105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2054894611
 RectTransform:
   m_ObjectHideFlags: 0

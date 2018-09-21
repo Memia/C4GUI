@@ -10,7 +10,6 @@ public class CustomisationSet : MonoBehaviour
     public string[] classes;
     public string heroclass = "Class";
     private int classIndex;
-
     //  public Vector2 scrollPos;
     #region Variables
     [Header("Texture List")]
@@ -32,7 +31,8 @@ public class CustomisationSet : MonoBehaviour
 
     [Header("Renderer")]
     //renderer for our character mesh so we can reference a material list
-    public Renderer character;
+    public Renderer charMesh;
+
     [Header("Max Index")]
     //max amount of skin, hair, mouth, eyes textures that our lists are filling with
     public int skinMax;
@@ -49,10 +49,11 @@ public class CustomisationSet : MonoBehaviour
     //the points in which we use to increase our stats
     public int points = 10;
     public CharacterClass charClass = CharacterClass.Barbarian;
-    public string[] selectedClass = new string[8];
-    public int selectedIndex = 0;
+
     private void Start()  //in start we need to set up the following
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
         #region for loop to pull textures from file
         //for loop looping from 0 to less than the max amount of skin textures we need
@@ -101,7 +102,7 @@ public class CustomisationSet : MonoBehaviour
 
         #endregion
         //connect and find the SkinnedMeshRenderer thats in the scene to the variable we made for Renderer
-        character = GameObject.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
+        charMesh = GameObject.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
 
         #region do this after making the function SetTexture
         //SetTexture skin, hair, mouth, eyes to the first texture 0
@@ -111,6 +112,9 @@ public class CustomisationSet : MonoBehaviour
         SetTexture("Eyes", 0);
         SetTexture("Clothes", 0);
         SetTexture("Armour", 0);
+
+        ChooseClass(classIndex);
+
         #endregion
     }
 
@@ -206,16 +210,17 @@ public class CustomisationSet : MonoBehaviour
         {
             index = max - 1;
         }
+
         if (index > max - 1)
         {
             index = 0;
         }
         //Material array is equal to our characters material list
-        Material[] mat = character.materials;
+        Material[] mat = charMesh.materials;
         //our material arrays current material index's main texture is equal to our texture arrays current index
         mat[matIndex].mainTexture = textures[index];
         //our characters materials are equal to the material array
-        character.materials = mat;
+        charMesh.materials = mat;
         //create another switch that is goverened by the same string name of our material
         #endregion
         #region Set Material Switch
@@ -271,6 +276,17 @@ public class CustomisationSet : MonoBehaviour
         PlayerPrefs.SetInt("ArmourIndex", armourIndex);
         PlayerPrefs.SetInt("ClothesIndex", clothesIndex);
         PlayerPrefs.SetString("CharacterName", charName);
+        //SetString CharacterName
+        PlayerPrefs.SetString("CharacterName", charName);
+        for (int i = 0; i < stats.Length; i++)
+        {
+            PlayerPrefs.SetInt(statArray[i], stats[i]);
+        }
+
+        for (int i = 0; i < stats.Length; i++)
+        {
+            PlayerPrefs.SetString("CharacterClass", classes[classIndex]);
+        }
 
     }
 
@@ -454,30 +470,31 @@ public class CustomisationSet : MonoBehaviour
         i = 0;
         GUI.Box(new Rect(3.75f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), "Class");
         i++;
-        GUI.Box(new Rect(3.75f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), selectedClass[selectedIndex]);
+        GUI.Box(new Rect(3.75f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), classes[classIndex]);
         if (GUI.Button(new Rect(3.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
         {
-            selectedIndex--;
-            if (selectedIndex < 0)
+            classIndex--;
+            if (classIndex < 0)
             {
-                selectedIndex = selectedClass.Length - 1;
+                classIndex = classes.Length - 1;
             }
-            ChooseClass(selectedIndex);
+            ChooseClass(classIndex);
         }
 
         if (GUI.Button(new Rect(5.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
         {
-            selectedIndex++;
-            if (selectedIndex > selectedClass.Length - 1)
+            classIndex++;
+            if (classIndex > classes.Length - 1)
             {
-                selectedIndex = 0;
+                classIndex = 0;
             }
-            ChooseClass(selectedIndex);
+            ChooseClass(classIndex);
         }
         #endregion
 
         for (int s = 0; s < 6; s++)
         {
+            GUI.Box(new Rect(3.75f * scrW, 2.5f * scrH + s * (0.5f * scrH), 2f * scrW, 0.5f * scrH), statArray[s] + ":" + (stats[s] + tempStats[s]));
             if (points > 0)
             {
                 if (GUI.Button(new Rect(5.75f * scrW, 2.5f * scrH + s * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "+"))
@@ -486,41 +503,30 @@ public class CustomisationSet : MonoBehaviour
                     tempStats[s]++;
                 }
             }
-
-            GUI.Box(new Rect(3.75f * scrW, 2.5f * scrH + s * (0.5f * scrH), 2f * scrW, 0.5f * scrH), statArray[s] + ":" + (stats[s] + tempStats[s]));
+            if (points < 10 && tempStats[s] > 0)
+            {
+                if (GUI.Button(new Rect(3.25f * scrW, 2.5f * scrH + s * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "-"))
+                {
+                    points++;
+                    tempStats[s]--;
+                }
+            }
         }
         #endregion
         #region Class Selection
-        if (GUI.Button(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "<"))
-        {
-            classIndex -= 1;
-            if (classIndex < 0)
-            {
-                classIndex = classes.Length - 1;
-            }
-        }
-        if (GUI.Button(new Rect(1.75f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), ">"))
-        {
-            classIndex += 1;
-            if (classIndex > classes.Length - 1)
-            {
-                classIndex = 0;
-            }
 
-        }
-        GUI.Box(new Rect(0.75f * scrW, scrH + i * (0.5f * scrH), 1f * scrW, 0.5f * scrH), classes[classIndex]);
 
         string toShow = "" + points;
         // if (GUI.Button(new Rect(12.15f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "-"))
         //{ points--; }
 
-        GUI.Button(new Rect(12.65f * scrW, scrH + i * (0.5f * scrH), .7f * scrW, 0.5f * scrH), toShow);
+        GUI.Box(new Rect(12.65f * scrW, scrH + i * (0.5f * scrH), .7f * scrW, 0.5f * scrH), toShow);
 
-        if (GUI.Button(new Rect(13.35f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "+"))
-            if (points > 0)
-            {
-                points--;
-            }
+        //if (GUI.Button(new Rect(13.35f * scrW, scrH + i * (0.5f * scrH), 0.5f * scrW, 0.5f * scrH), "+"))
+        //    if (points > 0)
+        //    {
+        //        points--;
+        //    }
         #region Barbarian
 
 

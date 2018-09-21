@@ -6,6 +6,7 @@ TagManager:
   tags:
   - AudioSlider
   - DirLight
+  - PainBox
   layers:
   - Default
   - TransparentFX
