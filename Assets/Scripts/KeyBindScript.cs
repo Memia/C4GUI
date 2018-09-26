@@ -29,30 +29,30 @@ public class KeyBindScript : MonoBehaviour
 
 
     public void LoadGame()
-{
-    SceneManager.LoadScene(1);
-}
-public void ExitGame()
-{
-#if UNITY_EDITOR
-    UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    Application.Quit();
-}
-void Start()
     {
-   // mainAudio = GameObject.Find("MainMusic").GetComponent<AudioSource>();
-    //dirLight = GameObject.Find("DirLight").GetComponent<Light>();
-      //  mainAudio.volume = PlayerPrefs.GetFloat("Volume", 1);
+        SceneManager.LoadScene(1);
+    }
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
+    }
+    void Start()
+    {
+        // mainAudio = GameObject.Find("MainMusic").GetComponent<AudioSource>();
+        //dirLight = GameObject.Find("DirLight").GetComponent<Light>();
+        //  mainAudio.volume = PlayerPrefs.GetFloat("Volume", 1);
 
-        keys.Add("Up", (KeyCode)System.Enum.Parse(typeof(KeyCode),PlayerPrefs.GetString("Up","W")));
+        keys.Add("Up", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Up", "W")));
         keys.Add("Down", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Down", "S")));
         keys.Add("Left", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Left", "A")));
         keys.Add("Right", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Right", "D")));
-        keys.Add("Jump", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Jump","Space")));
+        keys.Add("Jump", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Jump", "Space")));
         keys.Add("Crouch", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Crouch", "C")));
         keys.Add("Sprint", (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Sprint", "LeftShift")));
-        
+
         up.text = keys["Up"].ToString();
         down.text = keys["Down"].ToString();
         left.text = keys["Left"].ToString();
@@ -61,12 +61,12 @@ void Start()
         crouch.text = keys["Crouch"].ToString();
         sprint.text = keys["Sprint"].ToString();
 
-        Resolution[] resolutions = Screen.resolutions;
-        foreach (Resolution res in resolutions)
-        {
-            print(res.width + "x" + res.height);
-        }
-        Screen.SetResolution(resolutions[0].width, resolutions[0].height, true);
+        //Resolution[] resolutions = Screen.resolutions;
+        //foreach (Resolution res in resolutions)
+        //{
+        //    print(res.width + "x" + res.height);
+        //}
+        //  Screen.SetResolution(resolutions[0].width, resolutions[0].height, true);
     }
 
 
@@ -99,7 +99,7 @@ void Start()
         }
         curKey = clicked;
 
-      //  PlayerPrefs.SetString("FullScreen", isFullScreen.ToString());
+        //  PlayerPrefs.SetString("FullScreen", isFullScreen.ToString());
 
     }
     public void SaveKeys()
@@ -111,7 +111,7 @@ void Start()
             PlayerPrefs.SetString(key.Key, key.Value.ToString());
         }
         PlayerPrefs.Save();
-     //  curKey.GetComponent<Image>().color = selected;
+        //  curKey.GetComponent<Image>().color = selected;
     }
     public void ToggleOptions()
     {
@@ -134,12 +134,12 @@ void Start()
             optionsMenu.SetActive(true);
             volSlider = GameObject.Find("Volume_Slider").GetComponent<Slider>();
             volSlider.value = mainAudio.volume;//slider dot starts where volume amount is, but won't affect the volume
-           // brightSlider = GameObject.Find("Brightness_Slider").GetComponent<Slider>();
-           // brightSlider.value = dirLight.intensity;
-           // ambSlider = GameObject.Find("Ambience_Slider").GetComponent<Slider>();
-          //  ambSlider.value = RenderSettings.ambientIntensity;
-          //  resDropdown = GameObject.Find("Resolution").GetComponent<Dropdown>();
-          //  resDropdown.value = resIndex;
+                                               // brightSlider = GameObject.Find("Brightness_Slider").GetComponent<Slider>();
+                                               // brightSlider.value = dirLight.intensity;
+                                               // ambSlider = GameObject.Find("Ambience_Slider").GetComponent<Slider>();
+                                               //  ambSlider.value = RenderSettings.ambientIntensity;
+                                               //  resDropdown = GameObject.Find("Resolution").GetComponent<Dropdown>();
+                                               //  resDropdown.value = resIndex;
             return true;
         }
     }

@@ -17,10 +17,14 @@ public class CustomisationGet : MonoBehaviour
         charMesh = GameObject.Find("Mesh").GetComponent<SkinnedMeshRenderer>();
         //Run the function LoadTexture	
         LoadTexture();
+        LoadClass();
     }
 
     #endregion
-
+    void LoadClass()
+    {
+        SetClass("classes", PlayerPrefs.GetString("CharacterClass"));
+    }
     #region LoadTexture Function
     void LoadTexture()
     {
@@ -92,7 +96,7 @@ public class CustomisationGet : MonoBehaviour
                 tex = Resources.Load("Character/Clothes_" + dir.ToString()) as Texture2D;
                 matIndex = 6;
                 break;
-               
+
         }
 
         //Material array is equal to our characters material list
@@ -102,5 +106,10 @@ public class CustomisationGet : MonoBehaviour
         //our characters materials are equal to the material array
         charMesh.materials = mats;
         #endregion
+    }
+
+    void SetClass(string type, string classIndex)
+    {
+
     }
 }

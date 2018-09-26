@@ -62,6 +62,10 @@ public class CharacterHandler : MonoBehaviour
     public int constitution = 1;
     public int wisdom = 1;
     public float stamina = 100f;
+    public int strength;
+    public int intelligence;
+    public int charisma;
+    public CharacterClass charClass;
 
     [Header("Camera Connection")]
 
@@ -97,7 +101,15 @@ public class CharacterHandler : MonoBehaviour
         //connect the Character Controller to the controller variable
         controller = GetComponent<CharacterController>();
         maxMana = 1;
-
+        #region LoadStats
+        strength = PlayerPrefs.GetInt("Strength");
+        dexterity = PlayerPrefs.GetInt("Dexterity");
+        constitution = PlayerPrefs.GetInt("Constitution");
+        wisdom = PlayerPrefs.GetInt("Wisdom");
+        intelligence = PlayerPrefs.GetInt("Intelligence");
+        charisma = PlayerPrefs.GetInt("Charisma");
+        charClass = (CharacterClass)System.Enum.Parse(typeof(CharacterClass), PlayerPrefs.GetString("CharacterClass", "Barbarian"));
+        #endregion
     }
 
 
@@ -150,11 +162,7 @@ public class CharacterHandler : MonoBehaviour
         //if our current experience is greater or equal to the maximum experience
         if (currentExp >= maxExp)
         {
-            //then the current experience is equal to our experience minus the maximum amount of experience
-            currentExp -= maxExp;
-            //our level goes up by one
-            level++;
-            maxExp += 50;
+            LevelUp();
         }
         curHealth = (int)curHealth;
 
@@ -224,7 +232,14 @@ public class CharacterHandler : MonoBehaviour
 
 
     }
-
+    void LevelUp()
+    {
+        //then the current experience is equal to our experience minus the maximum amount of experience
+        currentExp -= maxExp;
+        //our level goes up by one
+        level++;
+        maxExp += 50;
+    }
 
 
 

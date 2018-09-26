@@ -54,6 +54,7 @@ public class CustomisationSet : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        statArray = new string[] { "Strength", "Dexterity", "Constitution", "Wisdom", "Intelligence", "Charisma" };
 
         #region for loop to pull textures from file
         //for loop looping from 0 to less than the max amount of skin textures we need
@@ -278,15 +279,22 @@ public class CustomisationSet : MonoBehaviour
         PlayerPrefs.SetString("CharacterName", charName);
         //SetString CharacterName
         PlayerPrefs.SetString("CharacterName", charName);
+
+        #region Stats
+        //PlayerPrefs.SetInt("Strength",);
+        #endregion
         for (int i = 0; i < stats.Length; i++)
         {
-            PlayerPrefs.SetInt(statArray[i], stats[i]);
+            PlayerPrefs.SetInt(statArray[i], (stats[i] + tempStats[i]));
         }
 
         for (int i = 0; i < stats.Length; i++)
         {
             PlayerPrefs.SetString("CharacterClass", classes[classIndex]);
+         
+
         }
+
 
     }
 
