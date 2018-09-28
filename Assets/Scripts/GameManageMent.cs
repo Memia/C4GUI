@@ -9,15 +9,14 @@ public class GameManageMent : MonoBehaviour
     public bool paused;
     public GameObject pausedPanel;
     public GameObject settingsPanel;
-
-
-
+    public LevelUpPanel levelUpPanel;
 
     // Use this for initialization
     void Start()
     {
         Time.timeScale = 1;
         pausedPanel.SetActive(false);
+        levelUpPanel = GetComponent<LevelUpPanel>();
     }
 
     // Update is called once per frame
@@ -27,22 +26,25 @@ public class GameManageMent : MonoBehaviour
         //if we perss escape Key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!paused)
+            if (levelUpPanel.levelUpPanel.activeSelf == false)
             {
-                Pause();
-            }
-            else if (paused && settingsPanel.activeSelf)
-            {
-
+                if (!paused)
                 {
-                    settingsPanel.SetActive(false);
-                    pausedPanel.SetActive(true);
+                    Pause();
                 }
+                else if (paused && settingsPanel.activeSelf)
+                {
 
-            }
-            else
-            {
-                Continue();
+                    {
+                        settingsPanel.SetActive(false);
+                        pausedPanel.SetActive(true);
+                    }
+
+                }
+                else
+                {
+                    Continue();
+                }
             }
         }
     }
@@ -64,8 +66,6 @@ public class GameManageMent : MonoBehaviour
         Time.timeScale = 1;
         paused = false;
         pausedPanel.SetActive(false);
-
-
     }
 
 

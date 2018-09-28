@@ -6,15 +6,17 @@ using UnityEngine.UI;
 [AddComponentMenu("FirstPerson/Stats")]
 public class CharacterHandler : MonoBehaviour
 {
+    public int points;
     public ObjectStats objectstats;
     public GameObject objects;
     #region Variables
-
+    [Header("Reference")]
 
     [Header("Character")]
     #region Character 
-    public bool alive;
     //bool to tell if the player is alive
+    public bool alive;
+    public Text havePoints;
     //connection to players character controller
     public CharacterController controller;
     CharacterMovement movement;
@@ -117,7 +119,15 @@ public class CharacterHandler : MonoBehaviour
     #endregion
     #region Update
     private void Update()
-    {
+    {if (points > 0)
+        {
+            havePoints.enabled = true;
+        }
+        else
+        {
+            havePoints.enabled = false;
+        }
+        
         if (secondaryTimer > 0)
         { secondaryTimer--; }
         if (secondaryTimer < 0)
